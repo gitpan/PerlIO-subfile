@@ -3,8 +3,9 @@ require 5.007001; # Stop perl 5.005 or earler barfing on the v string
 use ExtUtils::MakeMaker;
 use Config;
 
-unless ($Config{useperlio} eq 'define' and $Config{usesfio} eq 'false') {
-  die <<BARF;
+if (exists $Config{useperlio} and exists $Config{usesfio}) {
+  unless ($Config{useperlio} eq 'define' and $Config{usesfio} eq 'false') {
+    die <<BARF;
 You need perl 5.7.1 or later, configured to use perlio (and not to use sfio)
 Yes, this module is currently only suitable for the development branch of
 perl
@@ -17,6 +18,7 @@ Note
      version and 5.7.1, and may well change again. If so, it is quite
      possible that this module will fail to compile.
 BARF
+  }
 }
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence
 # the contents of the Makefile that is written.
